@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="author" content="Script Tutorials" />
+        
+
+        <!-- add styles -->
+        <link href="css/main.css" rel="stylesheet" type="text/css" />
+
+        <!-- add scripts -->
+        <script src="jquery-1.10.2.js"></script>
+	<script>
+	$(document).ready(function() {
+	
+	
+		var count=1;
+		$(".gonext").on("click",function(){
+		
+			if(count==1)
+			{
+				
+				$(".selectimg").css("background-image","url(images/cat_face.png)");
+				//$(".selectimg").hide();
+				for(var i=1;i<16;i++)
+				{
+					$("#id"+i).css("background-image","url(images/cat_face.png)")
+				}
+				count=2;
+			}
+			else
+			{
+				
+				$(".selectimg").css("background-image","url(images/dog.png)");
+				for(var i=1;i<16;i++)
+				{
+					$("#id"+i).css("background-image","url(images/dog.png)")
+				}
+				count=1;
+			}
+		
+		});
+	
+	
+	
+	
+	$('#game_object').hide();
+       var movable = false;
+	   var EmptySquare = 16;
+	   var clicked_square= "";
+	   var sizeOfBlock=100;
+	   var arr_a=[];
+	   var arr_b=[];
+		for(var i=1;i<17;i++)
+		{	
+			var obj={};
+			obj.left = $("#id"+i).css("left");
+			obj.top = $("#id"+i).css("top");
+			arr_a.push(obj);
+			arr_b.push(obj);
+			
+		}	  
+		
+        // Swap x/y between the clicked square and the currently empty square
+
+		$(".selectimg").on("click", function (){
+		
+			$(this).hide();
+			$(".score").show();
+			$(".previewimg").show();
+			$(".gonext").hide();
+			$('#game_object').show();
+			$("#board div").css("pointer-events","auto");	
+			
+			var abc = shuffleArr();
+			
+			if(abc==1)
+			{		
+					
+					var cnt=1;
+					for(var i=0; i<16;i++)
+					{
+					
+							tempx = arr_b[i].left;
+							tempy = arr_b[i].top; 
+				
+							$("#id"+cnt).css("left",tempx);
+							$("#id"+cnt).css("top",tempy);
+							cnt++;
+							
+					}
+			}				
+		});
+		
+		$("#board div").on("click", function (){
+				
+				clicked_square = this;
+
+				oldx = parseInt($('#id16').css('left'));
+				oldy = parseInt($('#id16').css('top'));
+				
+				
+				
+				
+				newx = parseInt($(clicked_square).css('left'));
+				newy = parseInt($(clicked_square).css('top'));	
+				
+				//South Direction
+				
+				if(oldx == newx  &&  (oldy + sizeOfBlock) == newy){
+					//alert("South");
+					fMove($(this));
+					
+				}
+				if(oldx == newx  &&  (oldy - sizeOfBlock) == newy){
+					fMove($(this));
+					//alert("North");
+					
+				}
+				if(oldy == newy  &&  (oldx + sizeOfBlock) == newx){
+					//alert("East");
+					fMove($(this));
+				}
+				if(oldy == newy  &&  (oldx - sizeOfBlock) == newx){
+					fMove($(this));
+					//alert("Wast");
+				}				
+		});
+		function shuffleArr()
+		{
+							
+						arr_b.sort(function(){
+							return Math.round(Math.random()) - 0.5;
+						});	
+								
+						return 1;
+		}		
+		
+		var score=0;
+        function fMove(clickedObj)
+		{
+				
+					score++;
+					$(".changescore").html(score);
+									
+					$(clickedObj).animate({left:oldx,top:oldy});
+					$('#id16').animate({left:newx,top:newy});
+		}
+		
+		
+		$("#helpBtn").on("click",function()
+		{
+			$(".CLSSHELPTXT").show();
+			$(this).hide();
+			$("#playBtn").hide();
+			$("#exitBtn").hide();
+			
+		});
+		
+		$(".goback").on("click",function()
+		{
+			$("#helpBtn").show();
+			$(".CLSSHELPTXT").hide();
+			$("#playBtn").show();
+			$("#exitBtn").show();
+			
+		});
+		$("#playBtn").on("click",function()
+		{
+			$(".gonext").show();
+			$("#helpBtn").hide();
+			$(".CLSSHELPTXT").hide();
+			$("#playBtn").hide();
+			$("#exitBtn").hide();
+			$(".selectimg").show();
+			
+			
+		});
+		
+		$("#exitBtn").on("click",function(){
+			window.close();
+		});
+		
+		
+		$(".previewimg").mouseenter(function() {
+		
+				$(".selectimg").show();
+				
+			}).mouseleave(function() {
+			
+					$(".selectimg").hide();
+			});
+		
+ 		
+	});
+	
+	</script>
+    </head>
+    <body>
+        <div class="main">
+		</div>
+        <!-- This is where the game will be injected -->
+        <div id="game_object">
+			<div id="board">
+			
+				<div id="id1"></div>
+				<div id="id2"></div>
+				<div id="id3"></div>
+				<div id="id4"></div>
+				<div id="id5"></div>
+				<div id="id6"></div>
+				<div id="id7"></div>
+				<div id="id8"></div>
+				<div id="id9"></div>
+				<div id="id10"></div>
+				<div id="id11"></div>
+				<div id="id12"></div>
+				<div id="id13"></div>
+				<div id="id14"></div>
+				<div id="id15"></div>				
+				<div id="id16"></div>
+			</div>
+		
+		</div>
+		<div id="playBtn" ></div>
+		<div id="helpBtn" ></div>
+		<div id="exitBtn" ></div>
+		<div class="selectimg"></div>
+<div class="CLSSHELPTXT">
+<ul>
+<li>Select the Image on Click of Play button</li>
+<li>The Image is in scripbbled form</li>
+<li>Complete the Image by moving the blocks with tranparent block</li>
+</ul>
+<div class="goback"><u>GoBack</u></div>
+
+</div>
+<div class="gonext"><u>NextImage</u></div>
+
+<div class="score">Total Moves:  <span class="changescore">0</span></div>
+
+<div class="previewimg">PreviewImage</div>
+
+    </body>
+</html>
